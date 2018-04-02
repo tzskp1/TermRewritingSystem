@@ -15,7 +15,7 @@ type order =
 (* >_{Lex} *)
 let rec lex' (ord : 'a -> 'a -> order) =
   function
-  | _::_,[] | [],_::_ -> failwith "lex' : undefined"
+  | _::_,[] | [],_::_ -> NGE
   | [],[] -> EQ
   | x::xs,y::ys ->
      match ord x y with
