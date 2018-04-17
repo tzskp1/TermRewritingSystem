@@ -15,8 +15,9 @@ type order =
 (* >_{Lex} *)
 let rec lex' (ord : 'a -> 'a -> order) =
   function
-  | _::_,[] | [],_::_ -> NGE
   | [],[] -> EQ
+  | _::_,[] -> GR
+  | [],_::_ -> NGE
   | x::xs,y::ys ->
      match ord x y with
      | EQ -> lex' ord (xs,ys)
@@ -36,7 +37,9 @@ let lex (ord : 'a -> 'a -> order) (xs,ys: 'a list * 'a list) =
        | GR -> GR
        end
   in 
-  if List.length xs != List.length ys
+  if List.length xs > List.length ys
+  then GR
+  else if List.length xs < List.length ys
   then failwith "lex : undefined"
   else iter (xs,ys)
 
